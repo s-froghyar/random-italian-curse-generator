@@ -1,0 +1,15 @@
+.container {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../assets/background-img.jpg');
+    background-size: 100vw 100vh;
+    overflow: hidden;
+    .main {
+        font-size: 5rem;
+    }
+}
