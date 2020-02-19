@@ -2,10 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItaEngCurse } from './interfaces/ita-eng-curse.interface';
 import { HttpClient } from '@angular/common/http';
 
+import {
+  SpeechSynthesisUtteranceFactoryService,
+  SpeechSynthesisService,
+} from '@kamiazya/ngx-speech-synthesis';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [SpeechSynthesisUtteranceFactoryService]
 })
 export class AppComponent implements OnInit {
   data: string;
@@ -13,7 +18,10 @@ export class AppComponent implements OnInit {
   randomInd = 0;
   randomElement: ItaEngCurse = {italian: '', english: ''};
   isLoading = true;
-  constructor(public http: HttpClient) { }
+  constructor(
+    public http: HttpClient,
+    public f: SpeechSynthesisUtteranceFactoryService,
+    public svc: SpeechSynthesisService) { }
 
   ngOnInit() {
     const options = { responseType: 'text' as 'json' };
@@ -46,5 +54,10 @@ export class AppComponent implements OnInit {
   updateElement(): void {
     this.randomInd = this.getRandomNumber();
     this.randomElement = this.theStructure[this.randomInd];
+    this.say(this.randomElement.italian);
+  }
+  say(stuff: string): void {
+    const v = this.f.text(stuff);
+    this.svc.speak(this.f.text(stuff));
   }
 }
