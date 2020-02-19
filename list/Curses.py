@@ -7,7 +7,7 @@ with open('italian_curses.txt') as txt_file:
         list.append(row)
 
 with open('curse_list.csv', 'w') as csv_file:
-    csv_writer = csv.writer(csv_file, delimiter = '\t')
+    csv_writer = csv.writer(csv_file, delimiter = '|')
     line = 0
     for row in range(len(list)):
         if line == 0:
