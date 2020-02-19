@@ -2,14 +2,18 @@
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-image: url('../assets/background-img.jpg');
+    background-image: url('../assets/imgs/background-img.jpg');
     background-size: 100vw 100vh;
     overflow: hidden;
-    .main {
-        font-size: 5rem;
+    font-size: 5rem;
+    .italian, .english {
+        width: 10rem;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 }
