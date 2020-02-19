@@ -1,11 +1,16 @@
 <div class="container">
-  <div class="italian">
-    Oli fucked up
+  <div class="main">
+    <div class="italian" *ngIf="!isLoading">
+      {{ randomElement.italian }}
+    </div>
+    <div class="arr">
+      &rarr;
+    </div>
+    <div class="english" *ngIf="!isLoading">
+      {{ randomElement.english }}
+    </div>
   </div>
-  <div class="arr">
-    &rarr;
-  </div>
-  <div class="english">
-    Again
+  <div class="action">
+    <button (click)="updateElement()">He fucked it again!</button>
   </div>
 </div>

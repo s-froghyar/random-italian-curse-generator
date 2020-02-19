@@ -10,30 +10,41 @@ import { HttpClient } from '@angular/common/http';
 export class AppComponent implements OnInit {
   data: string;
   theStructure: ItaEngCurse[] = [];
+  randomInd = 0;
+  randomElement: ItaEngCurse = {italian: '', english: ''};
+  isLoading = true;
+  constructor(public http: HttpClient) { }
 
-  constructor(public http: HttpClient) {}
   ngOnInit() {
-    const options = {responseType: 'text' as 'json' };
-    this.http.get<string>('assets/data.txt', options)
+    const options = { responseType: 'text' as 'json' };
+    this.http.get<string>('assets/curse_list.csv', options)
       .subscribe(
-          data => {
-              this.data = data;
-              console.log(data);
-              this.createStructure(data);
-              console.log(this.theStructure);
-          },
-          error => {
-              console.log(error);
-          }
+        data => {
+          this.data = data;
+          this.createStructure(data);
+          this.updateElement();
+          this.isLoading = false;
+        },
+        error => {
+          console.log(error);
+        }
       );
+  }
+  getRandomNumber(): number {
+    return Math.floor(Math.random() * 120) + 0;
   }
   createStructure(data: string) {
     const lines = data.match(/[^\r\n]+/g);
     lines.forEach(line => {
+      const parts = line.split('|');
       this.theStructure.push({
-        italian: line.split(',')[0],
-        english: line.split(',')[1]
+        italian: parts[0],
+        english: parts[1]
       });
     });
+  }
+  updateElement(): void {
+    this.randomInd = this.getRandomNumber();
+    this.randomElement = this.theStructure[this.randomInd];
   }
 }

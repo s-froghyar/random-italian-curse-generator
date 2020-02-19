@@ -1,17 +1,35 @@
 .container {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
     width: 100vw;
     height: 100vh;
+
     background-image: url('../assets/imgs/background-img.jpg');
     background-size: 100vw 100vh;
-    overflow: hidden;
+    .main {
+        width: 100vw;
+        height: 90vh;
+        
+        overflow: hidden;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    .action {
+        width: 100vw;
+        height: 10vh;
+        display: flex;
+        justify-content: center;
+        button {
+            background: black;
+            color: white;
+            font-size: large;
+            border: 1px solid white;
+        }
+    }
+    margin: 0;
+    padding: 0;
     font-size: 5rem;
     .italian, .english {
-        width: 10rem;
+        width: 15rem;
         height: 100%;
         display: flex;
         align-items: center;
