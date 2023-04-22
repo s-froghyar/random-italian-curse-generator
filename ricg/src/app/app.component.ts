@@ -1,53 +1,49 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItaEngCurse } from './interfaces/ita-eng-curse.interface';
 import { HttpClient } from '@angular/common/http';
+import { take } from 'rxjs';
+import { Text2speechService } from 'speech-synthesis-text-to-speech';
 
-import {
-  SpeechSynthesisUtteranceFactoryService,
-  SpeechSynthesisService,
-} from '@kamiazya/ngx-speech-synthesis';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [SpeechSynthesisUtteranceFactoryService]
+  providers: [],
 })
 export class AppComponent implements OnInit {
-  data: string;
+  data!: string;
   theStructure: ItaEngCurse[] = [];
   randomInd = 0;
-  randomElement: ItaEngCurse = {italian: '', english: ''};
+  randomElement: ItaEngCurse = { italian: '', english: '' };
+
   isLoading = true;
   constructor(
     public http: HttpClient,
-    public f: SpeechSynthesisUtteranceFactoryService,
-    public svc: SpeechSynthesisService) { }
+    private readonly tts: Text2speechService
+  ) {}
 
   ngOnInit() {
     const options = { responseType: 'text' as 'json' };
-    this.http.get<string>('assets/curse_list.csv', options)
-      .subscribe(
-        data => {
-          this.data = data;
-          this.createStructure(data);
-          this.updateElement();
-          this.isLoading = false;
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    this.http
+      .get<string>('assets/curse_list.csv', options)
+      .pipe(take(1))
+      .subscribe((data) => {
+        this.data = data;
+        this.createStructure(data);
+        this.updateElement();
+        this.isLoading = false;
+      });
   }
   getRandomNumber(): number {
     return Math.floor(Math.random() * 120) + 0;
   }
   createStructure(data: string) {
     const lines = data.match(/[^\r\n]+/g);
-    lines.forEach(line => {
+    lines?.forEach((line) => {
       const parts = line.split('|');
       this.theStructure.push({
         italian: parts[0],
-        english: parts[1]
+        english: parts[1],
       });
     });
   }
@@ -57,7 +53,13 @@ export class AppComponent implements OnInit {
     this.say(this.randomElement.italian);
   }
   say(stuff: string): void {
-    const v = this.f.text(stuff);
-    this.svc.speak(this.f.text(stuff));
+    const voices = window.speechSynthesis.getVoices();
+    this.tts.StartSynthesis(stuff, {
+      voiceObj: voices[0],
+      lang: 'ita',
+      volume: 1.0,
+      pitch: 1.0,
+      rate: 1.0,
+    });
   }
 }
