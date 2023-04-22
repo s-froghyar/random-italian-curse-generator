@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { ItaEngCurse } from './interfaces/ita-eng-curse.interface';
 import { HttpClient } from '@angular/common/http';
 import { take } from 'rxjs';
 import { Text2speechService } from 'speech-synthesis-text-to-speech';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
 
   isLoading = true;
   constructor(
+    @Inject(DOCUMENT) private document: Document,
     public http: HttpClient,
     private readonly tts: Text2speechService
   ) {}
@@ -53,7 +55,9 @@ export class AppComponent implements OnInit {
     this.say(this.randomElement.italian);
   }
   say(stuff: string): void {
-    const voices = window.speechSynthesis.getVoices();
+    const voices = (
+      this.document.defaultView as Window
+    ).speechSynthesis.getVoices();
     this.tts.StartSynthesis(stuff, {
       voiceObj: voices[0],
       lang: 'ita',
