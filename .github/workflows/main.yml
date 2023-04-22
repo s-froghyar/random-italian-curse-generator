@@ -27,7 +27,7 @@ jobs:
         working-directory: ./ricg
         run: |
           yarn
-          yarn build:prod
+          yarn build
 
       - name: List Files in Distribution Directory
         run: ls -R ./ricg/dist/ricg
